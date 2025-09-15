@@ -1,0 +1,63 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <!-- Brand -->
+    <a class="navbar-brand" href="#">Crypto Bank</a>
+
+    <!-- Navbar Toggler for mobile -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar Items -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      {% if user.is_authenticated %}
+      <!-- LEFT side links (only when logged in) -->
+      <div class="navbar-nav me-auto">
+        <a class="nav-item nav-link custom-blue " href="{% url 'transactions:transaction_report' %}">Report</a>
+        <a class="nav-item nav-link custom-blue" href="{% url 'transactions:deposit_money' %}">Deposit</a>
+        <a class="nav-item nav-link custom-blue" href="{% url 'transactions:withdraw_money' %}">Withdraw</a>
+        <a class="nav-item nav-link custom-blue" href="{% url 'transactions:loan_list' %}">Loan Details</a>
+      </div>
+
+      <!-- RIGHT side buttons (Profile + Logout) -->
+      <div class="d-flex ms-auto">
+        <span class="me-3 fw-bold text-primary">
+          Welcome, {{ user.username }} (Balance: {{ user.account.balance| default:"0.00" | floatformat:2}} )
+        </span>
+        <a href="{% url 'profile' %}" class="btn btn-primary me-2">Profile</a>
+
+        <form method="post" action="{% url 'logout' %}" class="d-inline">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">Logout</button>
+        </form>
+      </div>
+      {% else %}
+      <!-- RIGHT side buttons (Login + Register when logged out) -->
+      <div class="d-flex ms-auto">
+        <a href="{% url 'login' %}" class="btn btn-primary me-2">Login</a>
+        <a href="{% url 'register' %}" class="btn btn-success">Register</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  <style>
+  .navbar-light .navbar-nav .nav-link {
+    color: #003366 !important;   /* Bootstrap's primary blue */
+    font-weight: 500;
+  }
+
+  .navbar-brand {
+    color: #003366 !important;   /* Brand text blue */
+    font-weight: 700;
+  }
+</style>
+
+</nav>
